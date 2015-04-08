@@ -1,0 +1,38 @@
+<html>
+<head>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+        <script type="text/javascript">
+                $(function() {                  
+                         $('span.stars').stars();
+                });
+
+                $.fn.stars = function() {
+                        return $(this).each(function() {
+                                $(this).html($('<span />').width(Math.max(0, (Math.min(5, parseFloat($(this).html())))) * 16));
+                        });
+                }
+        </script>
+        <style type="text/css">
+                span.stars, span.stars span {
+                        display: block;
+                        background: url(http://www.ulmanen.fi/stuff/stars.png) 0 -16px repeat-x;
+                        width: 80px;
+                        height: 16px;
+                }
+
+                span.stars span {
+                        background-position: 0 0;
+                }
+        </style>
+</head>
+<body>
+
+<p>
+   <span class="stars">4.8618164</span>
+        <span class="stars">2.6545344</span>
+        <span class="stars">0.5355</span>
+        <span class="stars">8</span>
+</p>
+
+</body>
+</html>
