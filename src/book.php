@@ -71,109 +71,22 @@ li.filter
 }
 </style>
 
-        <script type="text/javascript">
-                $(function() {                  
-                         $('span.stars').stars();
-                });
-
-                $.fn.stars = function() {
-                        return $(this).each(function() {
-                                $(this).html($('<span />').width(Math.max(0, (Math.min(5, parseFloat($(this).html())))) * 16));
-                        });
-                }
-        </script>
-        <style type="text/css">
-                span.stars, span.stars span {
-                        display: inline-block;
-                        background: url(stars.png) 0 -16px repeat-x;
-                        width: 80px;
-                        height: 16px;
-                }
-
-                span.stars span {
-                        background-position: 0 0;
-                }
-        </style>
-
+<script type="text/javascript" src = "stars.js"> </script>
+<link rel="stylesheet" href="stars.css" />
 
   </head>
   <body>
 
-    <?php
-    $con=mysqli_connect("10.5.18.66","12CS10023","btech12","12CS10023");
-// Check connection
-    if (mysqli_connect_errno())
-    {
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-  }
+<?php include 'connect.php';?>
 
-    $q = $_GET['q'];
-  if(isset($q)) {
-      $querybase = "SELECT * FROM BS_BOOKS as a left join `BX-Books` as b on a.ISBN = b.ISBN left join BS_M_GENRE as g on a.ISBN = g.ISBN where a.ISBN = '".$q."' limit 1 ";
-      // echo $q;
-  }
-  ?>
-  <!-- Fixed navbar -->
-  <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Book Store</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="query.php">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Categories <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Browse All</a></li>
-            <li class="divider"></li>
+<?php
+$q = $_GET['q'];
+if(isset($q)) {
+  $querybase = "SELECT * FROM BS_BOOKS as a left join `BX-Books` as b on a.ISBN = b.ISBN left join BS_M_GENRE as g on a.ISBN = g.ISBN where a.ISBN = '".$q."' limit 1 ";
+}
+?>
+<?php include 'nav.php';?>
 
-            <?php
-            $query = "select (GENRE) from BS_M_GENRE group by GENRE order by count(ISBN) desc limit 10";
-            $result = mysqli_query($con,$query);
-
-// mysqli_query($con,"INSERT INTO Persons (FirstName,LastName,Age) 
-// VALUES ('Glenn','Quagmire',33)");
-            if ($result->num_rows > 0) {
-    // output data of each row
-                while($row = $result->fetch_assoc()) {
-                 echo '  <li><a href="#">'.$row["GENRE"].'</a></li>';
-             }
-         } else {
-            echo "0 results";
-        }
-        ?>
-
-            </ul>
-        </li>
-    </ul>
-    <form class="navbar-form navbar-left" role="search" action="query.php" method="get" id = "queryForm">
-
-      <!-- <div class="form-group"> -->
-      <div class="input-group">
-          <input autocomplete="off" type="text" class="form-control" placeholder="Search" aria-describedby="sizing-addon1" id = "qterm" name="q" onkeyup="autocomplet()">
-          <span class="input-group-addon" id="sizing-addon1">Q</span>
-      </div>
-      <!-- <button class="btn btn-default" type="submit" >Q</button> -->
-      <ul id="hints"></ul>
-  </form>
-
-  <ul class="nav navbar-nav navbar-right">
-    <li><a href="signin/signin.php">Sign in</a></li>
-    <li><a href="../navbar-static-top/">Admin</a></li>
-    <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li>
-</ul>
-</div><!--/.nav-collapse -->
-</div>
-</nav>
 <div class="container">
 
     <?php
@@ -284,16 +197,13 @@ li.filter
 
 </div>
 
-
-           <?php
-           echo '</p>
-
+<?php
+echo '</p>
 </div>
-
-           </a>';
-       }
-   } else {
-    echo "0 results";
+</a>';
+}
+} else {
+  echo "0 results";
 }
 }
 ?>
@@ -339,9 +249,6 @@ li.filter
             echo "0 results";
         }
         ?>
-
-
-
 
     <h4>
         Similar books:

@@ -6,15 +6,20 @@ function connect() {
 
 $pdo = connect();
 $keyword = '%'.$_POST['keyword'].'%';
-$sql = "SELECT * FROM BS_BOOKS WHERE Title LIKE (:keyword) ORDER BY ISBN ASC LIMIT 0, 10";
-$query = $pdo->prepare($sql);	
-$query->bindParam(':keyword', $keyword, PDO::PARAM_STR);
-$query->execute();
-$list = $query->fetchAll();
-foreach ($list as $rs) {
+$type = $_POST['type'];
+echo $type;
+if(strcmp($type,"Title")) {
+	$sql = "SELECT * FROM BS_BOOKS WHERE Title LIKE (:keyword) ORDER BY ISBN ASC LIMIT 0, 10";
+	$query = $pdo->prepare($sql);	
+	$query->bindParam(':keyword', $keyword, PDO::PARAM_STR);
+	$query->execute();
+	$list = $query->fetchAll();
+	foreach ($list as $rs) {
 	// put in bold the written text
-	$Title = str_replace($_POST['keyword'], '<b>'.$_POST['keyword'].'</b>', $rs['Title']);
+		$Title = str_replace($_POST['keyword'], '<b>'.$_POST['keyword'].'</b>', $rs['Title']);
 	// add new option
-    echo '<a href = "book.php?q='.$rs['ISBN'] .'""> <li>'.$Title.'</li></a>';
+		echo '<a href = "book.php?q='.$rs['ISBN'] .'""> <li>'.$Title.'</li></a>';
+	}
 }
+
 ?>

@@ -108,85 +108,27 @@ li.filter
     $q = $_GET['q'];
   if(isset($q)) {
       $querybase = "SELECT * FROM BS_BOOKS as a left join `BX-Books` as b on a.ISBN = b.ISBN left join BS_M_GENRE as g on a.ISBN = g.ISBN where" ;
+    $isbnquery = "SELECT ISBN FROM ";
     if(strcmp($_GET['qtype'] ,"Publisher")==0) {
-        $querybase .= " e.NAME ";
+        $isbnquery .= " BS_PUBLISH WHERE NAME ";
     }
-    else if($_GET['qtype'] == "Author") {
-        $querybase .= " d.NAME ";
+    else if(strcmp($_GET['qtype'] ,"Author")==0) {
+        $isbnquery .= " BS_AUTHOR WHERE NAME ";
     }
     else if(strcmp($_GET['qtype'] ,"Title")==0) {
-        $querybase .= " Title ";
+        $isbnquery .= " BS_BOOKS WHERE Title ";
     }
-    $querybase .= "like '%".$q."%'";
-      echo $querybase;
+    else if(strcmp($_GET['qtype'] ,"Genre")==0) {
+        $isbnquery .= " BS_M_GENRE WHERE GENRE ";
+    }
+    $isbnquery .= "like '%".$q."%' ";
+      // echo $isbnquery;
+  }
+  else {
+    $isbnquery = "select ISBN from BS_BOOKS";
   }
   ?>
-  <!-- Fixed navbar -->
-  <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Book Store</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="query.php">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <!-- <li><a href="#contact">Contact</a></li> -->
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Categories <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Browse All</a></li>
-            <li class="divider"></li>
-
-            <?php
-            $query = "select (GENRE) from BS_M_GENRE group by GENRE order by count(ISBN) desc limit 10";
-            $result = mysqli_query($con,$query);
-            if ($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                 echo '  <li><a href="#">'.$row["GENRE"].'</a></li>';
-             }
-         } else {
-            echo "0 results";
-        }
-        ?>
-
-            </ul>
-        </li>
-    </ul>
-    <form class="navbar-form navbar-left" role="search" action="query.php" method="get" id = "queryForm">
-      <div class="input-group">
-          <span class="input-group-addon" id="sizing-addon1">Q</span>
-          <input autocomplete="off" type="text" class="form-control" placeholder="Search" aria-describedby="sizing-addon1" id = "qterm" name="q" onkeyup="autocomplet()">
-      </div>
-      <!-- <button class="btn btn-default" type="submit" >Q</button> -->
-      <ul id="hints"></ul>
-in
-  <select class="form-control" name = "qtype">
-    <option value="Title">Title</option>
-    <option value="Author">Author</option>
-    <option value="Publisher">Publisher</option>
-</select>
-
-<!-- Single button -->
-
-  </form>
-
-
-  <ul class="nav navbar-nav navbar-right">
-    <li><a href="../navbar-static-top/">Admin</a></li>
-    <li><a href="signin/signin.php">Sign in</a></li>
-    <li><a href="register/register.php">Register</a></li>
-    <!-- <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li> -->
-</ul>
-</div><!--/.nav-collapse -->
-</div>
-</nav>
+<?php include 'nav.php';?>
 <div class="container">
   <div class="col-md-3">
 
@@ -198,7 +140,7 @@ in
 
     <?php
     // echo $querybase;
-    $query = "select (GENRE), count(ISBN) as c from (". $querybase.") as a group by GENRE order by count(ISBN) desc limit 15";
+    $query = "select (GENRE), count(ISBN) as c from BS_M_GENRE where ISBN in  (". $isbnquery.") group by GENRE order by count(ISBN) desc limit 15";
     // echo $query;
     $result = mysqli_query($con,$query);
     if ($result->num_rows > 0) {
@@ -211,26 +153,10 @@ in
 ?>
 
 <h4>
-    Format
-</h4>
-    <?php
-    $query = "select (COVER), count(ISBN) as c from (". $querybase.") as a group by COVER order by count(ISBN) desc limit 15";
-    // $query = "select distinct(COVER), count(*) as c from BS_BOOKS group by COVER order by count(ISBN) desc limit 15";
-    $result = mysqli_query($con,$query);
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-         echo '  <li class = "filter"><input type="checkbox" name="aauthor" value="Bike"> <a href="#">'.$row["COVER"].'</a> ('.$row["c"].')</li>';
-     }
- } else {
-    echo "0 results";
-}
-?>
-
-<h4>
     Author
 </h4>
     <?php
-    $query = "select (NAME), count(ISBN) as c from (". $querybase.") as a group by NAME order by count(ISBN) desc limit 15";
+    $query = "select (NAME), count(ISBN) as c from BS_AUTHOR where ISBN in (". $isbnquery.") group by NAME order by count(ISBN) desc limit 15";
     // $query = "select distinct(NAME), count(*) as c from BS_AUTHOR group by NAME order by count(ISBN) desc limit 15";
     $result = mysqli_query($con,$query);
     if ($result->num_rows > 0) {
@@ -243,11 +169,27 @@ in
 ?>
 
 <h4>
+    Format
+</h4>
+    <?php
+    $query = "select (COVER), count(ISBN) as c from BS_BOOKS where ISBN in (". $isbnquery.") group by COVER order by count(ISBN) desc limit 15";
+    // $query = "select distinct(COVER), count(*) as c from BS_BOOKS group by COVER order by count(ISBN) desc limit 15";
+    $result = mysqli_query($con,$query);
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+         echo '  <li class = "filter"><input type="checkbox" name="aauthor" value="Bike"> <a href="#">'.$row["COVER"].'</a> ('.$row["c"].')</li>';
+     }
+ } else {
+    echo "0 results";
+}
+?>
+
+<h4>
     Language
 </h4>
 
 <?php
-$query = "select distinct(LANGUAGE), count(*) as c from BS_BOOKS group by LANGUAGE order by count(ISBN) desc limit 5";
+$query = "select (LANGUAGE), count(*) as c from BS_BOOKS where ISBN in (".$isbnquery .")group by LANGUAGE order by count(ISBN) desc limit 5";
 $result = mysqli_query($con,$query);
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -267,9 +209,9 @@ if ($result->num_rows > 0) {
 
     // Perform queries 
     // $query = "SELECT * FROM BS_BOOKS where Title like '%".$q."%' limit 10";
-      $query = $querybase." group by ISBN limit 15";
+      $query = "Select * from BS_BOOKS where ISBN in (". $isbnquery.") limit 15";
       $result = mysqli_query($con,$query);
-
+echo $query;
     // mysqli_query($con,"INSERT INTO Persons (FirstName,LastName,Age) 
     // VALUES ('Glenn','Quagmire',33)");
       if ($result->num_rows > 0) {
@@ -303,10 +245,12 @@ if ($result->num_rows > 0) {
     echo "0 results";
 }
 }
+else {
+  echo "Please search for something.";
+}
 ?>
 
 
-Results
 </div>
 
 

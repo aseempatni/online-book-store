@@ -6,7 +6,7 @@
 }
 
 #hints {
-	width: 206px;
+	width: 406px;
 	border: 1px solid #eaeaea;
 	position: absolute;
 	z-index: 9;
@@ -19,7 +19,7 @@
 #hints li:hover {
 	background: #eaeaea;
 }
-#country_list_id {
+#hints {
 	display: none;
 }
 
