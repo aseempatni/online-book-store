@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Book Store</a>
+        <a class="navbar-brand" href="#">Infinity Books</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -44,11 +44,11 @@
       <!-- <button class="btn btn-default" type="submit" >Q</button> -->
       <ul id="hints"></ul>
 in
-  <select class="form-control" name = "qtype">
+  <select class="form-control" name = "qtype" id = "qtype">
     <option value="Title">Title</option>
     <option value="Author">Author</option>
     <option value="Publisher">Publisher</option>
-    <option value="GEnre">Genre</option>
+    <option value="Category">Category</option>
 </select>
 
   </form>

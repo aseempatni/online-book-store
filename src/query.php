@@ -118,7 +118,7 @@ li.filter
     else if(strcmp($_GET['qtype'] ,"Title")==0) {
         $isbnquery .= " BS_BOOKS WHERE Title ";
     }
-    else if(strcmp($_GET['qtype'] ,"Genre")==0) {
+    else if(strcmp($_GET['qtype'] ,"Category")==0) {
         $isbnquery .= " BS_M_GENRE WHERE GENRE ";
     }
     $isbnquery .= "like '%".$q."%' ";
@@ -134,71 +134,7 @@ li.filter
 
     Refine by
 
-    <h4>
-        Categories
-    </h4>
-
-    <?php
-    // echo $querybase;
-    $query = "select (GENRE), count(ISBN) as c from BS_M_GENRE where ISBN in  (". $isbnquery.") group by GENRE order by count(ISBN) desc limit 15";
-    // echo $query;
-    $result = mysqli_query($con,$query);
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-         echo '  <li class = "filter"><input type="checkbox" name="aauthor" value="Bike"> <a href="#">'.$row["GENRE"].'</a> ('.$row["c"].')</li>';
-     }
- } else {
-    echo "0 results";
-}
-?>
-
-<h4>
-    Author
-</h4>
-    <?php
-    $query = "select (NAME), count(ISBN) as c from BS_AUTHOR where ISBN in (". $isbnquery.") group by NAME order by count(ISBN) desc limit 15";
-    // $query = "select distinct(NAME), count(*) as c from BS_AUTHOR group by NAME order by count(ISBN) desc limit 15";
-    $result = mysqli_query($con,$query);
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-         echo '  <li class = "filter"><input type="checkbox" name="aauthor" value="Bike"> <a href="#">'.$row["NAME"].'</a> ('.$row["c"].')</li>';
-     }
- } else {
-    echo "0 results";
-}
-?>
-
-<h4>
-    Format
-</h4>
-    <?php
-    $query = "select (COVER), count(ISBN) as c from BS_BOOKS where ISBN in (". $isbnquery.") group by COVER order by count(ISBN) desc limit 15";
-    // $query = "select distinct(COVER), count(*) as c from BS_BOOKS group by COVER order by count(ISBN) desc limit 15";
-    $result = mysqli_query($con,$query);
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-         echo '  <li class = "filter"><input type="checkbox" name="aauthor" value="Bike"> <a href="#">'.$row["COVER"].'</a> ('.$row["c"].')</li>';
-     }
- } else {
-    echo "0 results";
-}
-?>
-
-<h4>
-    Language
-</h4>
-
-<?php
-$query = "select (LANGUAGE), count(*) as c from BS_BOOKS where ISBN in (".$isbnquery .")group by LANGUAGE order by count(ISBN) desc limit 5";
-$result = mysqli_query($con,$query);
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-         echo '  <li class = "filter"><input type="checkbox" name="aauthor" value="Bike"> <a href="#">'.$row["LANGUAGE"].'</a> ('.$row["c"].')</li>';
-   }
-} else {
-    echo "0 results";
-}
-?>
+<?php include 'refine.php';?>
 
 </div>
 <div id = "books" class="col-md-9">
@@ -209,9 +145,9 @@ if ($result->num_rows > 0) {
 
     // Perform queries 
     // $query = "SELECT * FROM BS_BOOKS where Title like '%".$q."%' limit 10";
-      $query = "Select * from BS_BOOKS where ISBN in (". $isbnquery.") limit 15";
+      $query = "Select * from (". $isbnquery.") as x natural join BS_BOOKS natural join `BX-Books` limit 15";
       $result = mysqli_query($con,$query);
-echo $query;
+// echo $query;
     // mysqli_query($con,"INSERT INTO Persons (FirstName,LastName,Age) 
     // VALUES ('Glenn','Quagmire',33)");
       if ($result->num_rows > 0) {

@@ -241,8 +241,9 @@ echo '</p>
 
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
-                 echo "Name: ".$row["NAME"].'<br>';
-                 echo "Rating: ".$row["Rating"].'<br>';
+                 // echo "Name: ".$row["NAME"].'<br>';
+                 echo '<b> Rating: </b>'.'<span class="stars"><span style="width: '.( (  floatval($row["Rating"]) )/5)*80 .'px;"></span></span><br>';
+                 // echo "Rating: ".$row["Rating"].'<br>';
                  echo "Review: ".$row["Review"] .'<br><br>';
              }
          } else {

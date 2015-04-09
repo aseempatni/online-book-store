@@ -1,26 +1,22 @@
-
 .label_div {
-	width: 120px;
-	float: left;
-	line-height: 28px;
+width: 120px;
+float: left;
+line-height: 28px;
 }
-
 #hints {
-	width: 406px;
-	border: 1px solid #eaeaea;
-	position: absolute;
-	z-index: 9;
-	background: #f3f3f3;
-	list-style: none;
+width: 406px;
+border: 1px solid #eaeaea;
+position: absolute;
+z-index: 9;
+background: #f3f3f3;
+list-style: none;
 }
 #hints li {
-	padding: 2px;
+padding: 2px;
 }
 #hints li:hover {
-	background: #eaeaea;
+background: #eaeaea;
 }
 #hints {
-	display: none;
+display: none;
 }
-
-
