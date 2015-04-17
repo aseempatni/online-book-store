@@ -5,7 +5,7 @@
 <title>Registration Form in PHP and Mysql, Sign up Form with PHP and Mysql</title>
 <meta name="description" content="This tutorial explains that how to create a simple registration form in PHP and mysql with Javascript validation for input and store input data in database."/>
 <meta name="keywords" content="Registration Form in PHP and Mysql with Javascript validation, Registration Form with Javascript validation, Sign up, Registration Form, Sign up Form with Javascript validation, Registration Form in PHP"/>
-<link href="style.css" rel="stylesheet" type="text/css">
+<!-- <link href="style.css" rel="stylesheet" type="text/css"> -->
 
 </head>
 <body>
@@ -36,7 +36,7 @@ if($num_rows==0)
 }
 else
 {
-		echo "SORRY...YOU ARE ALREADY REGISTERED USER...";
+		echo "YOU ARE ALREADY REGISTERED USER... Please go back and login.";
 }
 
 
@@ -48,7 +48,6 @@ $msg = "Your enquiry sending failed";
 <div class="thanks-text">
 <?php echo $msg?>
 
-<div class="tut"> <a href="http://www.discussdesk.com/create-registration-form-using-php-and-mysql.htm">Go back to the Tutorial </a> </div>
 </div>
 </body>
 </html>

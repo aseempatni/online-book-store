@@ -121,7 +121,7 @@ li.filter
     else if(strcmp($_GET['qtype'] ,"Category")==0) {
         $isbnquery .= " BS_M_GENRE WHERE GENRE ";
     }
-    $isbnquery .= "like '%".$q."%' ";
+    $isbnquery .= 'like "%'.$q.'%" ';
       // echo $isbnquery;
   }
   else {

@@ -208,8 +208,31 @@ echo '</p>
 }
 ?>
 <br>
-<p><a class="btn btn-primary btn-lg" href="#" role="button">Buy now</a></p>
-<!-- <p><a class="btn btn-primary btn-lg" href="#" role="button">Add to cart</a></p> -->
+
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Buy now
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Transaction successful</h4>
+      </div>
+      <div class="modal-body">
+        Thank you. We hope you enjoyed the service.
+        <br>
+        We hope you'll come back soon. 
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+        <a href ="query.php"><button type="button" class="btn btn-primary">Go to home page</button></a>
+      </div>
+    </div>
+  </div>
+</div>
 
     <h4>
         Description
@@ -252,7 +275,7 @@ echo '</p>
         ?>
 
     <h4>
-        Similar books:
+        <!-- Similar books: -->
     </h4>
 
     <?php
