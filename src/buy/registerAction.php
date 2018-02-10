@@ -13,35 +13,38 @@
 <?php
 include "dbConfig.php";
 if($_POST[ 'name' ]!="") {
-$name = mysql_real_escape_string($_POST["name"]);
-$email = mysql_real_escape_string($_POST["email"]);
-$password = mysql_real_escape_string($_POST["password"]);
+	
+	$name = mysql_real_escape_string(htmlspecialchars($_POST["name"]));
+	$email = mysql_real_escape_string($_POST["email"]);
+	if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { //PHP 5 supported
+      		echo 'Invalid email format';
+    	} else {
+		$password = mysql_real_escape_string($_POST["password"]);
 
-$query = mysql_query("SELECT * FROM BS_MEMBERS WHERE email = '$_POST[email]'") or die(mysql_error());
-$num_rows = mysql_num_rows($query);
-if($num_rows==0)
-{
-		echo "OK ";
-		
-		$query = "insert into BS_MEMBERS set name='".$name."', email='".$email."', password='".$password."' ";
-		$data = mysql_query ($query)or die(mysql_error());
-		if($data)
+		$query = mysql_query("SELECT * FROM BS_MEMBERS WHERE email = '$email'") or die(mysql_error());
+		$num_rows = mysql_num_rows($query);
+		if($num_rows==0)
 		{
-			echo "YOUR REGISTRATION IS COMPLETED...";
-
-			
-			$msg = '
-			<p class = "tanx">Thank you for completing your online registration form!.';
+			echo "OK ";
+		
+			$query = "insert into BS_MEMBERS set name='".$name."', email='".$email."', password='".$password."' ";
+			$data = mysql_query ($query)or die(mysql_error());
+			if($data)
+			{
+				echo "YOUR REGISTRATION IS COMPLETED...";
+				$msg = '
+				<p class = "tanx">Thank you for completing your online registration form!.';
+			}
 		}
-}
-else
-{
+	}
+	else
+	{
 		echo "SORRY...YOU ARE ALREADY REGISTERED USER...";
-}
+	}
 
 
-}else{
-$msg = "Your enquiry sending failed";
+} else {
+	$msg = "Your enquiry sending failed";
 }	
 
 ?>
